@@ -22,13 +22,27 @@ Start:
     MOV     RDX, INPUT_Buffer_LENGTH
     SYSCALL
 
+    MOV     BL, [INPUT_Buffer]
+    CMP     BL, 49     ; ASCII ('1')
+    JE      OPTION_Sum
+
+Exit:
     MOV     RAX, 60
     XOR     RDI, RDI
     SYSCALL
 
+OPTION_Sum:
+    MOV     RAX, 1
+    MOV     RDI, 1
+    MOV     RSI, TEXT_Sum_Selected
+    MOV     RDX, TEXT_Sum_Selected_LENGTH
+    SYSCALL
+
+    JMP     Exit
+
 SEGMENT READABLE WRITEABLE
 
-    INPUT_Buffer_LENGTH = 64
+    INPUT_Buffer_LENGTH = 2
     INPUT_Buffer RB INPUT_Buffer_LENGTH
 
     TEXT_Title DB "Bravion Calculator", 10
@@ -42,3 +56,6 @@ SEGMENT READABLE WRITEABLE
                    DB "4) Divisor", 10
 
     TEXT_Main_Menu_LENGTH = $ - TEXT_Main_Menu
+
+    TEXT_Sum_Selected DB "Sum selected", 10
+    TEXT_Sum_Selected_LENGTH = $ - TEXT_Sum_Selected
