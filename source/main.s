@@ -2,25 +2,30 @@ FORMAT ELF64 EXECUTABLE
 
     ENTRY Start
 
-SEGMENT READABLE EXECUTABLE
-Start:
-    MOV     RAX, 1
-    MOV     RDI, 1
-    MOV     RSI, TEXT_Title
-    MOV     RDX, TEXT_Title_LENGTH
-    SYSCALL
-
-    MOV     RAX, 1
-    MOV     RDI, 1
-    MOV     RSI, TEXT_Main_Menu
-    MOV     RDX, TEXT_Main_Menu_LENGTH
-    SYSCALL
-
+MACRO Input Buffer, Counter
+{
     MOV     RAX, 0
     MOV     RDI, 0
-    MOV     RSI, INPUT_Buffer
-    MOV     RDX, INPUT_Buffer_LENGTH
+    MOV     RSI, Buffer
+    MOV     RDX, Counter
     SYSCALL
+}
+
+MACRO Print Buffer, Counter
+{
+    MOV     RAX, 1
+    MOV     RDI, 1
+    MOV     RSI, Buffer
+    MOV     RDX, Counter
+    SYSCALL
+}
+
+SEGMENT READABLE EXECUTABLE
+Start:
+    Print       TEXT_Title, TEXT_Title_LENGTH
+    Print       TEXT_Main_Menu, TEXT_Main_Menu_LENGTH
+
+    Input       INPUT_Buffer, INPUT_Buffer_LENGTH
 
     MOV     BL, [INPUT_Buffer]
 
@@ -36,11 +41,7 @@ Start:
     CMP     BL, 52      ; ASCII ('4')
     JE      OPTION_Divisor
 
-    MOV     RAX, 1
-    MOV     RDI, 1
-    MOV     RSI, TEXT_Invalid_Option
-    MOV     RDX, TEXT_Invalid_Option_LENGTH
-    SYSCALL
+    Print       TEXT_Invalid_Option, TEXT_Invalid_Option_LENGTH
 
 Exit:
     MOV     RAX, 60
@@ -48,40 +49,20 @@ Exit:
     SYSCALL
 
 OPTION_Sum:
-    MOV     RAX, 1
-    MOV     RDI, 1
-    MOV     RSI, TEXT_Sum_Selected
-    MOV     RDX, TEXT_Sum_Selected_LENGTH
-    SYSCALL
-
-    JMP     Exit
+    Print       TEXT_Sum_Selected, TEXT_Sum_Selected_LENGTH
+    JMP         Exit
 
 OPTION_Subtract:
-    MOV     RAX, 1
-    MOV     RDI, 1
-    MOV     RSI, TEXT_Subtract_Selected
-    MOV     RDX, TEXT_Subtract_Selected_LENGTH
-    SYSCALL
-
-    JMP     Exit
+    Print       TEXT_Subtract_Selected, TEXT_Subtract_Selected_LENGTH
+    JMP         Exit
 
 OPTION_Multiply:
-    MOV     RAX, 1
-    MOV     RDI, 1
-    MOV     RSI, TEXT_Multiply_Selected
-    MOV     RDX, TEXT_Multiply_Selected_LENGTH
-    SYSCALL
-
-    JMP     Exit
+    Print       TEXT_Multiply_Selected, TEXT_Multiply_Selected_LENGTH
+    JMP         Exit
 
 OPTION_Divisor:
-    MOV     RAX, 1
-    MOV     RDI, 1
-    MOV     RSI, TEXT_Divisor_Selected
-    MOV     RDX, TEXT_Divisor_Selected_LENGTH
-    SYSCALL
-
-    JMP     Exit
+    Print       TEXT_Divisor_Selected, TEXT_Divisor_Selected_LENGTH
+    JMP         Exit
 
 SEGMENT READABLE WRITEABLE
 
