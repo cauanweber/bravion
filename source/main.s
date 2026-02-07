@@ -20,6 +20,12 @@ MACRO Print Buffer, Counter
     SYSCALL
 }
 
+MACRO Check_Option Register, Value, Target
+{
+    CMP     Register, Value
+    JE      Target
+}
+
 SEGMENT READABLE EXECUTABLE
 Start:
     Print       TEXT_Title, TEXT_Title_LENGTH
@@ -29,22 +35,12 @@ Menu:
     Print       TEXT_Menu, TEXT_Menu_LENGTH
     Input       INPUT_Buffer, INPUT_Buffer_LENGTH
 
-    MOV         BL, [INPUT_Buffer]
-
-    CMP         BL, 49      ; ASCII ('1')
-    JE          OPTION_Sum
-
-    CMP         BL, 50      ; ASCII ('2')
-    JE          OPTION_Subtract
-
-    CMP         BL, 51      ; ASCII ('3')
-    JE          OPTION_Multiply
-
-    CMP         BL, 52      ; ASCII ('4')
-    JE          OPTION_Divisor
-
-    CMP         BL, 53      ; ASCII ('5')
-    JE          OPTION_Exit
+    MOV                 BL, [INPUT_Buffer]
+    Check_Option        BL, 49, OPTION_Sum          ; ASCII ('1')
+    Check_Option        BL, 50, OPTION_Subtract     ; ASCII ('2')
+    Check_Option        BL, 51, OPTION_Multiply     ; ASCII ('3')
+    Check_Option        BL, 52, OPTION_Divisor      ; ASCII ('4')
+    Check_Option        BL, 53, OPTION_Exit         ; ASCII ('5')
 
     Print       DEBUG_TEXT_Invalid, DEBUG_TEXT_Invalid_LENGTH
     JMP         Menu
