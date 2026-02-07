@@ -23,25 +23,25 @@ MACRO Print Buffer, Counter
 SEGMENT READABLE EXECUTABLE
 Start:
     Print       TEXT_Title, TEXT_Title_LENGTH
-    Print       TEXT_Main_Menu, TEXT_Main_Menu_LENGTH
+    Print       TEXT_Menu, TEXT_Menu_LENGTH
 
     Input       INPUT_Buffer, INPUT_Buffer_LENGTH
 
-    MOV     BL, [INPUT_Buffer]
+    MOV         BL, [INPUT_Buffer]
 
-    CMP     BL, 49      ; ASCII ('1')
-    JE      OPTION_Sum
+    CMP         BL, 49      ; ASCII ('1')
+    JE          OPTION_Sum
 
-    CMP     BL, 50      ; ASCII ('2')
-    JE      OPTION_Subtract
+    CMP         BL, 50      ; ASCII ('2')
+    JE          OPTION_Subtract
 
-    CMP     BL, 51      ; ASCII ('3')
-    JE      OPTION_Multiply
+    CMP         BL, 51      ; ASCII ('3')
+    JE          OPTION_Multiply
 
-    CMP     BL, 52      ; ASCII ('4')
-    JE      OPTION_Divisor
+    CMP         BL, 52      ; ASCII ('4')
+    JE          OPTION_Divisor
 
-    Print       TEXT_Invalid_Option, TEXT_Invalid_Option_LENGTH
+    Print       DEBUG_TEXT_Invalid, DEBUG_TEXT_Invalid_LENGTH
 
 Exit:
     MOV     RAX, 60
@@ -49,19 +49,16 @@ Exit:
     SYSCALL
 
 OPTION_Sum:
-    Print       TEXT_Sum_Selected, TEXT_Sum_Selected_LENGTH
+    Print       DEBUG_TEXT_A, DEBUG_TEXT_A_LENGTH
     JMP         Exit
-
 OPTION_Subtract:
-    Print       TEXT_Subtract_Selected, TEXT_Subtract_Selected_LENGTH
+    Print       DEBUG_TEXT_B, DEBUG_TEXT_B_LENGTH
     JMP         Exit
-
 OPTION_Multiply:
-    Print       TEXT_Multiply_Selected, TEXT_Multiply_Selected_LENGTH
+    Print       DEBUG_TEXT_C, DEBUG_TEXT_C_LENGTH
     JMP         Exit
-
 OPTION_Divisor:
-    Print       TEXT_Divisor_Selected, TEXT_Divisor_Selected_LENGTH
+    Print       DEBUG_TEXT_D, DEBUG_TEXT_D_LENGTH
     JMP         Exit
 
 SEGMENT READABLE WRITEABLE
@@ -72,25 +69,25 @@ SEGMENT READABLE WRITEABLE
     TEXT_Title DB "Bravion Calculator", 10
     TEXT_Title_LENGTH = $ - TEXT_Title
 
-    TEXT_Main_Menu DB 10, "Choose operation:", 10
-                   DB     "1) Sum", 10
-                   DB     "2) Subtract", 10
-                   DB     "3) Multiply", 10
-                   DB     "4) Divisor", 10
+    TEXT_Menu DB 10, "Choose operation:"    , 10
+              DB     "1) Sum"               , 10
+              DB     "2) Subtract"          , 10
+              DB     "3) Multiply"          , 10
+              DB     "4) Divisor"           , 10
 
-    TEXT_Main_Menu_LENGTH = $ - TEXT_Main_Menu
+    TEXT_Menu_LENGTH = $ - TEXT_Menu
 
-    TEXT_Sum_Selected DB "Sum selected", 10
-    TEXT_Sum_Selected_LENGTH = $ - TEXT_Sum_Selected
+    DEBUG_TEXT_A DB "[DEBUG] Option '1' Selected.", 10
+    DEBUG_TEXT_A_LENGTH = $ - DEBUG_TEXT_A
 
-    TEXT_Subtract_Selected DB "Subtract selected", 10
-    TEXT_Subtract_Selected_LENGTH = $ - TEXT_Subtract_Selected
+    DEBUG_TEXT_B DB "[DEBUG] Option '2' Selected.", 10
+    DEBUG_TEXT_B_LENGTH = $ - DEBUG_TEXT_B
 
-    TEXT_Multiply_Selected DB "Multiply selected", 10
-    TEXT_Multiply_Selected_LENGTH = $ - TEXT_Multiply_Selected
+    DEBUG_TEXT_C DB "[DEBUG] Option '3' Selected.", 10
+    DEBUG_TEXT_C_LENGTH = $ - DEBUG_TEXT_C
 
-    TEXT_Divisor_Selected DB "Divisor selected", 10
-    TEXT_Divisor_Selected_LENGTH = $ - TEXT_Divisor_Selected
+    DEBUG_TEXT_D DB "[DEBUG] Option '4' Selected.", 10
+    DEBUG_TEXT_D_LENGTH = $ - DEBUG_TEXT_D
 
-    TEXT_Invalid_Option DB "Invalid option", 10
-    TEXT_Invalid_Option_LENGTH = $ - TEXT_Invalid_Option
+    DEBUG_TEXT_Invalid DB "[DEBUG] Invalid Option.", 10
+    DEBUG_TEXT_Invalid_LENGTH = $ - DEBUG_TEXT_Invalid
