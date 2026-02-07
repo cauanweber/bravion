@@ -2,7 +2,7 @@ FORMAT ELF64 EXECUTABLE
 
     ENTRY Start
 
-MACRO Input Buffer, Counter
+MACRO INPUT Buffer, Counter
 {
     MOV     RAX, 0
     MOV     RDI, 0
@@ -11,7 +11,7 @@ MACRO Input Buffer, Counter
     SYSCALL
 }
 
-MACRO Print Buffer, Counter
+MACRO PRINT Buffer, Counter
 {
     MOV     RAX, 1
     MOV     RDI, 1
@@ -20,7 +20,7 @@ MACRO Print Buffer, Counter
     SYSCALL
 }
 
-MACRO Check_Option Register, Value, Target
+MACRO CHECK_OPTION Register, Value, Target
 {
     CMP     Register, Value
     JE      Target
@@ -28,43 +28,42 @@ MACRO Check_Option Register, Value, Target
 
 SEGMENT READABLE EXECUTABLE
 Start:
-    Print       TEXT_Title, TEXT_Title_LENGTH
-    JMP         Menu
+    PRINT       TEXT_Title, TEXT_Title_LENGTH
 
 Menu:
-    Print       TEXT_Menu, TEXT_Menu_LENGTH
-    Input       INPUT_Buffer, INPUT_Buffer_LENGTH
+    PRINT       TEXT_Menu, TEXT_Menu_LENGTH
+    INPUT       INPUT_Buffer, INPUT_Buffer_LENGTH
 
     MOV                 BL, [INPUT_Buffer]
-    Check_Option        BL, 49, OPTION_Sum          ; ASCII ('1')
-    Check_Option        BL, 50, OPTION_Subtract     ; ASCII ('2')
-    Check_Option        BL, 51, OPTION_Multiply     ; ASCII ('3')
-    Check_Option        BL, 52, OPTION_Divisor      ; ASCII ('4')
-    Check_Option        BL, 53, OPTION_Exit         ; ASCII ('5')
+    CHECK_OPTION        BL, '1', OPTION_Sum
+    CHECK_OPTION        BL, '2', OPTION_Subtract
+    CHECK_OPTION        BL, '3', OPTION_Multiply
+    CHECK_OPTION        BL, '4', OPTION_Divisor
+    CHECK_OPTION        BL, '5', OPTION_Exit
 
-    Print       DEBUG_TEXT_Invalid, DEBUG_TEXT_Invalid_LENGTH
+    PRINT       DEBUG_TEXT_Invalid, DEBUG_TEXT_Invalid_LENGTH
     JMP         Menu
+
+OPTION_Sum:
+    PRINT       DEBUG_TEXT_A, DEBUG_TEXT_A_LENGTH
+    JMP         Menu
+OPTION_Subtract:
+    PRINT       DEBUG_TEXT_B, DEBUG_TEXT_B_LENGTH
+    JMP         Menu
+OPTION_Multiply:
+    PRINT       DEBUG_TEXT_C, DEBUG_TEXT_C_LENGTH
+    JMP         Menu
+OPTION_Divisor:
+    PRINT       DEBUG_TEXT_D, DEBUG_TEXT_D_LENGTH
+    JMP         Menu
+OPTION_Exit:
+    PRINT       DEBUG_TEXT_E, DEBUG_TEXT_E_LENGTH
+    JMP         Exit
 
 Exit:
     MOV     RAX, 60
     XOR     RDI, RDI
     SYSCALL
-
-OPTION_Sum:
-    Print       DEBUG_TEXT_A, DEBUG_TEXT_A_LENGTH
-    JMP         Menu
-OPTION_Subtract:
-    Print       DEBUG_TEXT_B, DEBUG_TEXT_B_LENGTH
-    JMP         Menu
-OPTION_Multiply:
-    Print       DEBUG_TEXT_C, DEBUG_TEXT_C_LENGTH
-    JMP         Menu
-OPTION_Divisor:
-    Print       DEBUG_TEXT_D, DEBUG_TEXT_D_LENGTH
-    JMP         Menu
-OPTION_Exit:
-    Print       DEBUG_TEXT_E, DEBUG_TEXT_E_LENGTH
-    JMP         Exit
 
 SEGMENT READABLE WRITEABLE
 
