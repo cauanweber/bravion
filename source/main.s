@@ -41,23 +41,18 @@ Menu:
     CHECK_OPTION        BL, '4', OPTION_Divisor
     CHECK_OPTION        BL, '5', OPTION_Exit
 
-    PRINT       DEBUG_TEXT_Invalid, DEBUG_TEXT_Invalid_LENGTH
+    PRINT       TEXT_Invalid_Number, TEXT_Invalid_Number_LENGTH
     JMP         Menu
 
 OPTION_Sum:
-    PRINT       DEBUG_TEXT_A, DEBUG_TEXT_A_LENGTH
     JMP         Menu
 OPTION_Subtract:
-    PRINT       DEBUG_TEXT_B, DEBUG_TEXT_B_LENGTH
     JMP         Menu
 OPTION_Multiply:
-    PRINT       DEBUG_TEXT_C, DEBUG_TEXT_C_LENGTH
     JMP         Menu
 OPTION_Divisor:
-    PRINT       DEBUG_TEXT_D, DEBUG_TEXT_D_LENGTH
     JMP         Menu
 OPTION_Exit:
-    PRINT       DEBUG_TEXT_E, DEBUG_TEXT_E_LENGTH
     JMP         Exit
 
 Exit:
@@ -82,20 +77,5 @@ SEGMENT READABLE WRITEABLE
 
     TEXT_Menu_LENGTH = $ - TEXT_Menu
 
-    DEBUG_TEXT_A DB "[DEBUG] Option '1' Selected.", 10
-    DEBUG_TEXT_A_LENGTH = $ - DEBUG_TEXT_A
-
-    DEBUG_TEXT_B DB "[DEBUG] Option '2' Selected.", 10
-    DEBUG_TEXT_B_LENGTH = $ - DEBUG_TEXT_B
-
-    DEBUG_TEXT_C DB "[DEBUG] Option '3' Selected.", 10
-    DEBUG_TEXT_C_LENGTH = $ - DEBUG_TEXT_C
-
-    DEBUG_TEXT_D DB "[DEBUG] Option '4' Selected.", 10
-    DEBUG_TEXT_D_LENGTH = $ - DEBUG_TEXT_D
-
-    DEBUG_TEXT_E DB "[DEBUG] Option '5' Selected.", 10
-    DEBUG_TEXT_E_LENGTH = $ - DEBUG_TEXT_E
-
-    DEBUG_TEXT_Invalid DB "[DEBUG] Invalid Option.", 10
-    DEBUG_TEXT_Invalid_LENGTH = $ - DEBUG_TEXT_Invalid
+    TEXT_Invalid_Number DB "Invalid Option.", 10
+    TEXT_Invalid_Number_LENGTH = $ - TEXT_Invalid_Number
