@@ -23,8 +23,10 @@ MACRO Print Buffer, Counter
 SEGMENT READABLE EXECUTABLE
 Start:
     Print       TEXT_Title, TEXT_Title_LENGTH
-    Print       TEXT_Menu, TEXT_Menu_LENGTH
+    JMP         Menu
 
+Menu:
+    Print       TEXT_Menu, TEXT_Menu_LENGTH
     Input       INPUT_Buffer, INPUT_Buffer_LENGTH
 
     MOV         BL, [INPUT_Buffer]
@@ -41,7 +43,11 @@ Start:
     CMP         BL, 52      ; ASCII ('4')
     JE          OPTION_Divisor
 
+    CMP         BL, 53      ; ASCII ('5')
+    JE          OPTION_Exit
+
     Print       DEBUG_TEXT_Invalid, DEBUG_TEXT_Invalid_LENGTH
+    JMP         Menu
 
 Exit:
     MOV     RAX, 60
@@ -50,15 +56,18 @@ Exit:
 
 OPTION_Sum:
     Print       DEBUG_TEXT_A, DEBUG_TEXT_A_LENGTH
-    JMP         Exit
+    JMP         Menu
 OPTION_Subtract:
     Print       DEBUG_TEXT_B, DEBUG_TEXT_B_LENGTH
-    JMP         Exit
+    JMP         Menu
 OPTION_Multiply:
     Print       DEBUG_TEXT_C, DEBUG_TEXT_C_LENGTH
-    JMP         Exit
+    JMP         Menu
 OPTION_Divisor:
     Print       DEBUG_TEXT_D, DEBUG_TEXT_D_LENGTH
+    JMP         Menu
+OPTION_Exit:
+    Print       DEBUG_TEXT_E, DEBUG_TEXT_E_LENGTH
     JMP         Exit
 
 SEGMENT READABLE WRITEABLE
@@ -74,6 +83,7 @@ SEGMENT READABLE WRITEABLE
               DB     "2) Subtract"          , 10
               DB     "3) Multiply"          , 10
               DB     "4) Divisor"           , 10
+              DB     "5) Exit"              , 10
 
     TEXT_Menu_LENGTH = $ - TEXT_Menu
 
@@ -88,6 +98,9 @@ SEGMENT READABLE WRITEABLE
 
     DEBUG_TEXT_D DB "[DEBUG] Option '4' Selected.", 10
     DEBUG_TEXT_D_LENGTH = $ - DEBUG_TEXT_D
+
+    DEBUG_TEXT_E DB "[DEBUG] Option '5' Selected.", 10
+    DEBUG_TEXT_E_LENGTH = $ - DEBUG_TEXT_E
 
     DEBUG_TEXT_Invalid DB "[DEBUG] Invalid Option.", 10
     DEBUG_TEXT_Invalid_LENGTH = $ - DEBUG_TEXT_Invalid
